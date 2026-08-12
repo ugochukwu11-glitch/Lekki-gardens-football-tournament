@@ -65,7 +65,6 @@
             {% for fixture in state.upcoming_fixtures %}
             <article class="fixture-row">
               <div class="fixture-topline">
-                <span class="round-tag">Round {{ fixture.round_number }}</span>
                 <span class="time-tag">{{ fixture.kickoff_label }}</span>
               </div>
 
@@ -221,7 +220,6 @@
             {% for fixture in state.fixtures %}
             <article class="admin-fixture">
               <div class="admin-fixture-head">
-                <strong>Round {{ fixture.round_number }}</strong>
                 <span>{{ fixture.kickoff_label }}</span>
               </div>
               <div class="admin-fixture-row">

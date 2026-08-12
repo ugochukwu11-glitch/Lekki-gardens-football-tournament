@@ -66,14 +66,21 @@ def logo_svg(team: dict) -> str:
 
 
 def format_kickoff_label(raw_value: str) -> str:
+    """Format kickoff as a date-only label (e.g. 'Fri 14 Aug').
+
+    We intentionally return only the date for all fixtures to match the
+    requested UI: times are not shown in the fixtures list.
+    """
     try:
+        # Accept both date-only (YYYY-MM-DD) and full ISO datetimes
         kickoff = datetime.fromisoformat(raw_value.replace("Z", "+00:00"))
-        # if stored as date-only (midnight), show just the date
-        if kickoff.hour == 0 and kickoff.minute == 0 and len(raw_value) <= 10:
-            return kickoff.strftime("%a %d %b")
-        return kickoff.strftime("%a %d %b, %I:%M %p")
+        return kickoff.strftime("%a %d %b")
     except Exception:
-        return raw_value
+        # Fallback: if raw_value looks like a date prefix, use that, else raw
+        try:
+            return raw_value[:10]
+        except Exception:
+            return raw_value
 
 
 def compute_standings(teams: list[dict], fixtures: list[dict]) -> list[dict]:
