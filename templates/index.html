@@ -178,7 +178,6 @@
             <input id="adminCode" type="password" placeholder="Admin code" />
             <button id="unlockAdmin">Unlock</button>
           </div>
-          <small>Set your own code with `ADMIN_CODE` before deployment.</small>
         </div>
         {% else %}
         <form method="post" action="{{ url_for('admin_save') }}" class="admin-form">
