@@ -411,7 +411,7 @@ body::before {
 }
 
 .table-wrap {
-  display: grid;
+  display: block;
   gap: 8px;
 }
 
@@ -620,29 +620,29 @@ body::before {
 
 @media (max-width: 960px) {
   .hero,
-  .sub-hero,
   .team-grid {
     grid-template-columns: 1fr;
   }
 
   .fixture-match,
-  .table-head,
-  .table-row,
   .admin-team-head,
   .admin-fixture-row {
     grid-template-columns: 1fr;
   }
 
-  .table-head {
-    display: none;
-  }
-
-  .table-row {
-    gap: 8px;
-  }
-
   .team-col {
     justify-content: space-between;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  .table-head,
+  .table-row {
+    min-width: 620px;
   }
 
   .tabs {
@@ -662,8 +662,7 @@ body::before {
   }
 
   .hero,
-  .panel,
-  .sub-hero {
+  .panel {
     padding: 16px;
     border-radius: 22px;
   }
