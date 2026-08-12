@@ -186,20 +186,35 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
   margin: 14px 0 10px;
+  min-width: 0;
+}
+
+.match-teams .team-chip {
+  max-width: 44%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .team-chip {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
+  gap: 8px;
+  padding: 8px 10px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.04);
   font-weight: 600;
-  font-size: 0.82rem;
+  font-size: 0.72rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.team-chip img {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .team-chip img,
