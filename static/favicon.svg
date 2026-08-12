@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Lekki Gardens tournament icon">
+  <defs>
+    <linearGradient id="g" x1="10" y1="10" x2="54" y2="54" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#7c8592"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#0b0d11"/>
+  <circle cx="32" cy="32" r="20" fill="url(#g)" stroke="#ffffff" stroke-width="2.5"/>
+  <path d="M32 22l7 5-3 8H28l-3-8 7-5z" fill="#0b0d11"/>
+  <path d="M21 31l6-5 6 4-2 7h-8l-2-6z" fill="#ffffff" opacity="0.25"/>
+  <path d="M43 31l-6-5-6 4 2 7h8l2-6z" fill="#ffffff" opacity="0.22"/>
+  <path d="M32 43l-6-4 2-7h8l2 7-6 4z" fill="#ffffff" opacity="0.2"/>
+</svg>
