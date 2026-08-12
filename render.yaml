@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: lekki-gardens-ph1-tournament
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    autoDeploy: true
+    plan: free

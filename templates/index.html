@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <h1>{{ title }}</h1>
+          <p>{{ subtitle }}</p>
+        </div>
+
+        <aside class="hero-board">
+          {% if state.next_fixture %}
+          <div class="next-match">
+            <div class="label">Next fixture</div>
+            <div class="match-teams">
+              <span class="team-chip">
+                <img src="{{ state.next_fixture.home_team.logo_uri }}" alt="{{ state.next_fixture.home_team.name }}" />
+                {{ state.next_fixture.home_team.short_name }}
+              </span>
+              <span class="vs">vs</span>
+              <span class="team-chip">
+                <img src="{{ state.next_fixture.away_team.logo_uri }}" alt="{{ state.next_fixture.away_team.name }}" />
+                {{ state.next_fixture.away_team.short_name }}
+              </span>
+            </div>
+            <div class="match-meta">{{ state.next_fixture.kickoff_label }} • {{ state.next_fixture.venue }}</div>
+          </div>
+          {% endif %}
+
+          <div class="stats-grid">
+            <div>
+              <strong>{{ state.summary.players }}</strong>
+              <span>Players listed</span>
+            </div>
+            <div>
+              <strong>{{ state.summary.completed_matches }}</strong>
+              <span>Matches played</span>
+            </div>
+          </div>
+        </aside>
+      </header>
+
+      <section class="sub-hero">
+        <div>
+          <h2>Suggested schedule</h2>
+          <p>{{ state.settings.schedule_summary }} · {{ state.settings.match_length }}</p>
+        </div>
+      </section>
+
+      <nav class="tabs">
+        <button class="tab is-active" data-tab="fixtures">Fixtures</button>
+        <button class="tab" data-tab="table">Table</button>
+        <button class="tab" data-tab="teams">Teams</button>
+        <div class="tab-spacer"></div>
+        <button class="admin-trigger" id="adminOpen">Admin</button>
+      </nav>
+
+      <main class="content">
+        <section class="panel is-active" id="fixtures">
+          <div class="panel-head">
+            <h3>Upcoming fixtures</h3>
+            <p>Scroll through the rounds. Scores stay blank until you update them from the hidden admin panel.</p>
+          </div>
+
+          <div class="fixture-list">
+            {% for fixture in state.upcoming_fixtures %}
+            <article class="fixture-row">
+              <div class="fixture-topline">
+                <span class="round-tag">Round {{ fixture.round_number }}</span>
+                <span class="time-tag">{{ fixture.kickoff_label }}</span>
+              </div>
+
+              <div class="fixture-match">
+                <div class="fixture-team home">
+                  <img src="{{ fixture.home_team.logo_uri }}" alt="{{ fixture.home_team.name }}" />
+                  <div>
+                    <strong>{{ fixture.home_team.name }}</strong>
+                    <span>{{ fixture.home_team.short_name }}</span>
+                  </div>
+                </div>
+
+                <div class="fixture-center">
+                  <span>vs</span>
+                  <small>{{ fixture.venue }}</small>
+                </div>
+
+                <div class="fixture-team away">
+                  <img src="{{ fixture.away_team.logo_uri }}" alt="{{ fixture.away_team.name }}" />
+                  <div>
+                    <strong>{{ fixture.away_team.name }}</strong>
+                    <span>{{ fixture.away_team.short_name }}</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="panel" id="table">
+          <div class="panel-head">
+            <h3>Team standings</h3>
+          </div>
+
+          <div class="table-wrap">
+            <div class="table-head">
+              <span>#</span>
+              <span>Team</span>
+              <span>P</span>
+              <span>W</span>
+              <span>D</span>
+              <span>L</span>
+              <span>Pts</span>
+            </div>
+
+            {% for row in state.standings %}
+            <div class="table-row">
+              <span class="rank">{{ row.rank }}</span>
+              <span class="team-col">
+                <img src="{{ row.logo_uri }}" alt="{{ row.name }}" />
+                <strong>{{ row.name }}</strong>
+              </span>
+              <span>{{ row.played }}</span>
+              <span>{{ row.won }}</span>
+              <span>{{ row.drawn }}</span>
+              <span>{{ row.lost }}</span>
+              <span class="pts">{{ row.points }}</span>
+            </div>
+            {% endfor %}
+          </div>
+        </section>
+
+        <section class="panel" id="teams">
+          <div class="panel-head">
+            <h3>Teams and players</h3>
+            <p>Each squad keeps its own color, crest, and player list. Empty spots are flagged clearly.</p>
+          </div>
+
+          <div class="team-grid">
+            {% for team in state.teams %}
+            <article class="team-card" style="--team-primary: {{ team.primary_color }}; --team-secondary: {{ team.secondary_color }};">
+              <div class="team-head">
+                <img src="{{ team.logo_uri }}" alt="{{ team.name }}" />
+                <div>
+                  <strong>{{ team.name }}</strong>
+                  <span>{{ team.short_name }}</span>
+                </div>
+              </div>
+
+              <div class="players-heading">Players</div>
+              <ul class="player-list">
+                {% for player in team.players %}
+                <li class="{{ 'empty' if player.is_empty else '' }}">
+                  <strong>{{ player.name if not player.is_empty else 'Empty spot' }}</strong>
+                </li>
+                {% endfor %}
+              </ul>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="admin-modal" id="adminModal" aria-hidden="true">
+      <div class="admin-backdrop" id="adminBackdrop"></div>
+      <div class="admin-panel">
+        <div class="admin-head">
+          <div>
+            <span class="eyebrow">Admin only</span>
+            <h3>Update teams and fixtures</h3>
+          </div>
+          <button class="close-btn" id="adminClose">Close</button>
+        </div>
+
+        {% if not admin_unlocked %}
+        <div class="admin-lock">
+          <p>Enter the admin code to reveal editing controls.</p>
+          <div class="lock-row">
+            <input id="adminCode" type="password" placeholder="Admin code" />
+            <button id="unlockAdmin">Unlock</button>
+          </div>
+          <small>Set your own code with `ADMIN_CODE` before deployment.</small>
+        </div>
+        {% else %}
+        <form method="post" action="{{ url_for('admin_save') }}" class="admin-form">
+          <div class="admin-actions">
+            <button type="button" id="lockAdmin">Lock admin</button>
+            <button type="submit" class="primary">Save changes</button>
+          </div>
+
+          <section class="admin-section">
+            <h4>Teams and players</h4>
+            {% for team in state.teams %}
+            <article class="admin-team">
+              <div class="admin-team-head">
+                <input name="team_name_{{ team.id }}" value="{{ team.name }}" />
+                <input name="team_short_{{ team.id }}" value="{{ team.short_name }}" maxlength="4" />
+                <input name="team_primary_{{ team.id }}" value="{{ team.primary_color }}" />
+                <input name="team_secondary_{{ team.id }}" value="{{ team.secondary_color }}" />
+                <select name="team_logo_{{ team.id }}">
+                  {% for option in ['shield', 'bolt', 'hex', 'diamond', 'star', 'circle'] %}
+                  <option value="{{ option }}" {% if option == team.logo_kind %}selected{% endif %}>{{ option }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="admin-player-grid">
+                {% for player in team.players %}
+                <label>
+                  <span>Player {{ player.slot_number }}</span>
+                  <input name="player_{{ team.id }}_{{ player.slot_number }}" value="{{ '' if player.is_empty else player.name }}" placeholder="Empty spot" />
+                </label>
+                {% endfor %}
+              </div>
+            </article>
+            {% endfor %}
+          </section>
+
+          <section class="admin-section">
+            <h4>Fixtures and results</h4>
+            {% for fixture in state.fixtures %}
+            <article class="admin-fixture">
+              <div class="admin-fixture-head">
+                <strong>Round {{ fixture.round_number }}</strong>
+                <span>{{ fixture.kickoff_label }}</span>
+              </div>
+              <div class="admin-fixture-row">
+                <span>{{ fixture.home_team.short_name }} vs {{ fixture.away_team.short_name }}</span>
+                <input type="number" min="0" name="home_score_{{ fixture.id }}" value="{{ fixture.home_score if fixture.home_score is not none else '' }}" placeholder="Home" />
+                <input type="number" min="0" name="away_score_{{ fixture.id }}" value="{{ fixture.away_score if fixture.away_score is not none else '' }}" placeholder="Away" />
+                <select name="status_{{ fixture.id }}">
+                  {% for option in ['Scheduled', 'Played', 'Postponed', 'Confirmed'] %}
+                  <option value="{{ option }}" {% if option == fixture.status %}selected{% endif %}>{{ option }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </article>
+            {% endfor %}
+          </section>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <script>
+      window.APP_STATE = {{ state | tojson }};
+      window.ADMIN_UNLOCKED = {{ 'true' if admin_unlocked else 'false' }};
+    </script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
