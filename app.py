@@ -11,6 +11,8 @@ from pathlib import Path
 
 from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
+from storage import get_store
+
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
@@ -79,6 +81,9 @@ DEFAULT_RULES = {
 }
 
 
+STORE = get_store()
+
+
 def make_app() -> Flask:
     app = Flask(__name__)
     app.secret_key = FLASK_SECRET_KEY
@@ -120,14 +125,7 @@ def make_app() -> Flask:
     def admin_save():
         if not session.get("admin_unlocked"):
             return jsonify({"ok": False, "message": "Admin access required"}), 403
-
-        conn = get_connection()
-        try:
-            save_teams_from_form(conn, request.form)
-            save_fixtures_from_form(conn, request.form)
-            conn.commit()
-        finally:
-            conn.close()
+        STORE.save_from_form(request.form)
         return redirect(url_for("index"))
 
     return app
@@ -137,59 +135,7 @@ app = make_app()
 
 
 def init_database() -> None:
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    with get_connection() as conn:
-        conn.executescript(
-            """
-            PRAGMA foreign_keys = ON;
-
-            CREATE TABLE IF NOT EXISTS settings (
-                key TEXT PRIMARY KEY,
-                value TEXT NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS qualification_rules (
-                key TEXT PRIMARY KEY,
-                value TEXT NOT NULL,
-                description TEXT NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS teams (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                short_name TEXT NOT NULL,
-                primary_color TEXT NOT NULL,
-                secondary_color TEXT NOT NULL,
-                logo_kind TEXT NOT NULL,
-                sort_order INTEGER NOT NULL
-            );
-
-            CREATE TABLE IF NOT EXISTS players (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                team_id INTEGER NOT NULL REFERENCES teams(id) ON DELETE CASCADE,
-                slot_number INTEGER NOT NULL,
-                name TEXT NOT NULL DEFAULT '',
-                is_empty INTEGER NOT NULL DEFAULT 0,
-                UNIQUE(team_id, slot_number)
-            );
-
-            CREATE TABLE IF NOT EXISTS fixtures (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                round_number INTEGER NOT NULL,
-                match_number INTEGER NOT NULL,
-                kickoff_at TEXT NOT NULL,
-                venue TEXT NOT NULL,
-                home_team_id INTEGER NOT NULL REFERENCES teams(id),
-                away_team_id INTEGER NOT NULL REFERENCES teams(id),
-                home_score INTEGER,
-                away_score INTEGER,
-                status TEXT NOT NULL DEFAULT 'Scheduled'
-            );
-            """
-        )
-
-        if not table_has_rows(conn, "teams"):
-            seed_database(conn)
+    STORE.bootstrap()
 
 
 def seed_database(conn: sqlite3.Connection) -> None:
@@ -594,37 +540,7 @@ def compute_standings(teams: list[dict], fixtures: list[dict]) -> list[dict]:
 
 
 def build_state() -> dict:
-    with get_connection() as conn:
-        settings = fetch_settings(conn)
-        rules = fetch_rules(conn)
-        teams = fetch_teams(conn)
-        fixtures = fetch_fixtures(conn)
-        standings = compute_standings(teams, fixtures)
-
-    upcoming = [fixture for fixture in fixtures if not fixture["played"]]
-    latest_result = next((fixture for fixture in reversed(fixtures) if fixture["played"]), None)
-    next_fixture = upcoming[0] if upcoming else None
-    completed = [fixture for fixture in fixtures if fixture["played"]]
-
-    return {
-        "title": APP_TITLE,
-        "subtitle": APP_SUBTITLE,
-        "settings": settings,
-        "rules": rules,
-        "teams": teams,
-        "fixtures": fixtures,
-        "upcoming_fixtures": upcoming,
-        "latest_result": latest_result,
-        "next_fixture": next_fixture,
-        "standings": standings,
-        "summary": {
-            "teams": len(teams),
-            "players": sum(1 for team in teams for player in team["players"] if not player["is_empty"]),
-            "empty_slots": sum(1 for team in teams for player in team["players"] if player["is_empty"]),
-            "completed_matches": len(completed),
-            "total_matches": len(fixtures),
-        },
-    }
+    return STORE.fetch_state()
 
 
 def save_teams_from_form(conn: sqlite3.Connection, form: dict) -> None:
