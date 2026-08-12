@@ -44,7 +44,7 @@ TEAMS_SEED = [
         "primary_color": "#13b8a6",
         "secondary_color": "#0b1320",
         "logo_kind": "hex",
-        "players": ["Yolos", "Chika", "Hustle", "Steven", "Ikenna", "Kante"],
+        "players": ["Chika", "Hustle", "Steven", "Vardy", "Kante", "Ikenna"],
     },
     {
         "id": 4,

@@ -45,7 +45,7 @@ RAW_TEAMS = [
     },
     {
         "name": "YOLOS FC 100K",
-        "players": ["Yolos", "Chika", "Hustle", "Steven", "Ikenna", "Kante"],
+        "players": ["Chika", "Hustle", "Steven", "Vardy", "Kante", "Ikenna"],
     },
     {
         "name": "H.I REAL ESTATE FC",
