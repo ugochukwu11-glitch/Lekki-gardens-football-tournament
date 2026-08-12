@@ -212,8 +212,8 @@ body::before {
 }
 
 .team-chip img {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 }
 
