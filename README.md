@@ -3,7 +3,9 @@
 ## Run locally
 
 ```bash
-python3 -m pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 python app.py
 ```
 
@@ -23,6 +25,7 @@ export SUPABASE_SERVICE_ROLE_KEY="your-service-role-key"
 4. Migrate the current SQLite data into Supabase:
 
 ```bash
+source .venv/bin/activate
 python scripts/migrate_sqlite_to_supabase.py
 ```
 
