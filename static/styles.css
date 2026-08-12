@@ -422,7 +422,7 @@ body::before {
 .table-head,
 .table-row {
   display: grid;
-  grid-template-columns: 52px 2.3fr repeat(4, minmax(40px, 1fr)) 1.1fr;
+  grid-template-columns: 52px 2.3fr repeat(5, minmax(40px, 1fr)) 1.1fr;
   gap: 10px;
   align-items: center;
 }
@@ -642,7 +642,7 @@ body::before {
 
   .table-head,
   .table-row {
-    min-width: 620px;
+    min-width: 700px;
   }
 
   .team-col {
