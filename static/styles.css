@@ -634,22 +634,6 @@ body::before {
     grid-template-columns: 1fr;
   }
 
-  .team-grid {
-    justify-items: start;
-  }
-
-  .team-card {
-    text-align: left;
-  }
-
-  .team-head {
-    justify-content: flex-start;
-  }
-
-  .team-col {
-    justify-content: space-between;
-  }
-
   .table-wrap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -659,6 +643,20 @@ body::before {
   .table-head,
   .table-row {
     min-width: 620px;
+  }
+
+  .team-col {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .team-col img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .team-col strong {
+    font-size: 0.95rem;
   }
 
   .tabs {
