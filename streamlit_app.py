@@ -37,14 +37,14 @@ DEFAULT_SETTINGS = {
 RAW_TEAMS = [
     {
         "name": "CP FC",
-        "players": ["C P", "Solomon", "Check up", "Sammy", "Daniel", "Cheatanna"],
+        "players": ["C P", "Solomon", "Check Up", "Sammy", "Daniel", "Cheatanna"],
     },
     {
         "name": "P MONEY FC",
-        "players": ["HDT", "YG", "KEVIN", "UGONNA", "P MONEY", ""],
+        "players": ["HDT", "YG", "Ugunna", "P Money", "Dennis", "Akpanya"],
     },
     {
-        "name": "YOLOS FC 100K",
+        "name": "YOLOS FC",
         "players": ["Chika", "Hustle", "Steven", "Vardy", "Kante", "Ikenna"],
     },
     {

@@ -26,7 +26,7 @@ TEAMS_SEED = [
         "primary_color": "#d7263d",
         "secondary_color": "#141414",
         "logo_kind": "shield",
-        "players": ["C P", "Solomon", "Check up", "Sammy", "Daniel", "Cheatanna"],
+        "players": ["C P", "Solomon", "Check Up", "Sammy", "Daniel", "Cheatanna"],
     },
     {
         "id": 2,
@@ -35,11 +35,11 @@ TEAMS_SEED = [
         "primary_color": "#d4af37",
         "secondary_color": "#111111",
         "logo_kind": "bolt",
-        "players": ["HDT", "YG", "KEVIN", "UGONNA", "P MONEY", ""],
+        "players": ["HDT", "YG", "Ugunna", "P Money", "Dennis", "Akpanya"],
     },
     {
         "id": 3,
-        "name": "YOLOS FC 100K",
+        "name": "YOLOS FC",
         "short_name": "YO",
         "primary_color": "#13b8a6",
         "secondary_color": "#0b1320",
