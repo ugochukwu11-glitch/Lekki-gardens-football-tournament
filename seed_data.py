@@ -53,7 +53,7 @@ TEAMS_SEED = [
         "primary_color": "#4f46e5",
         "secondary_color": "#111111",
         "logo_kind": "diamond",
-        "players": ["Mr Henry", "Mr Muri", "Mr Denis", "Mr Okikiola", "", ""],
+        "players": ["Mr Henry", "Mr Muri", "Mr Denis", "Mr Okikiola", "Emma", ""],
     },
     {
         "id": 5,
@@ -62,7 +62,7 @@ TEAMS_SEED = [
         "primary_color": "#8b5cf6",
         "secondary_color": "#151515",
         "logo_kind": "star",
-        "players": ["Shedi", "Paul", "Ekom", "Gotze", "", ""],
+        "players": ["Shedi", "Paul", "Ekom", "Gotze", "Moris", ""],
     },
     {
         "id": 6,
@@ -84,6 +84,7 @@ def next_saturday(dt: datetime) -> datetime:
 
 
 def build_round_robin_schedule(team_ids: list[int]) -> list[dict]:
+    # Single round-robin (each pair once), mapped across 5 matchdays with 3 matches each
     ids = team_ids[:]
     if len(ids) % 2:
         ids.append(None)
@@ -91,28 +92,52 @@ def build_round_robin_schedule(team_ids: list[int]) -> list[dict]:
     rounds = len(ids) - 1
     half = len(ids) // 2
     rotation = ids[:]
-    start_date = next_saturday(datetime.now())
-    kickoff_times = [(15, 0), (16, 30), (18, 0)]
+
+    # Explicit matchdays (first match of each day has a kickoff time of 18:30)
+    matchdays = [
+        datetime(2026, 8, 14),
+        datetime(2026, 8, 15),
+        datetime(2026, 8, 16),
+        datetime(2026, 8, 21),
+        datetime(2026, 8, 22),
+    ]
+    # Per-day kickoff slots: only the first match has a time (18:30)
+    day_kickoff_slots = [(18, 30), None, None]
+
     fixtures: list[dict] = []
     match_count = 1
 
     for round_number in range(1, rounds + 1):
         left = rotation[:half]
         right = list(reversed(rotation[half:]))
-        match_date = start_date + timedelta(days=(round_number - 1) * 7)
 
         for match_number, (home_id, away_id) in enumerate(zip(left, right), start=1):
             if home_id is None or away_id is None:
                 continue
             if round_number % 2 == 0:
                 home_id, away_id = away_id, home_id
-            hour, minute = kickoff_times[match_number - 1]
-            kickoff = match_date.replace(hour=hour, minute=minute, second=0, microsecond=0)
+
+            # determine which matchday and which slot within the day this match occupies
+            day_index = (match_count - 1) // 3
+            slot_index = (match_count - 1) % 3
+            if day_index < len(matchdays):
+                match_date = matchdays[day_index]
+            else:
+                match_date = matchdays[-1] + timedelta(days=(day_index - (len(matchdays) - 1)) * 7)
+
+            slot_time = day_kickoff_slots[slot_index]
+            if slot_time is None:
+                kickoff_at = match_date.date().isoformat()
+            else:
+                hour, minute = slot_time
+                kickoff = match_date.replace(hour=hour, minute=minute, second=0, microsecond=0)
+                kickoff_at = kickoff.isoformat(timespec="minutes")
+
             fixtures.append(
                 {
                     "round_number": round_number,
                     "match_number": match_count,
-                    "kickoff_at": kickoff.isoformat(timespec="minutes"),
+                    "kickoff_at": kickoff_at,
                     "home_team_id": home_id,
                     "away_team_id": away_id,
                 }
