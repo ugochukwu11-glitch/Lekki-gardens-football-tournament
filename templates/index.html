@@ -22,12 +22,12 @@
             <div class="match-teams">
               <span class="team-chip">
                 <img src="{{ state.next_fixture.home_team.logo_uri }}" alt="{{ state.next_fixture.home_team.name }}" />
-                {{ state.next_fixture.home_team.short_name }}
+                {{ state.next_fixture.home_team.name }}
               </span>
               <span class="vs">vs</span>
               <span class="team-chip">
                 <img src="{{ state.next_fixture.away_team.logo_uri }}" alt="{{ state.next_fixture.away_team.name }}" />
-                {{ state.next_fixture.away_team.short_name }}
+                {{ state.next_fixture.away_team.name }}
               </span>
             </div>
             <div class="match-meta">{{ state.next_fixture.kickoff_label }} • {{ state.next_fixture.venue }}</div>
