@@ -691,8 +691,17 @@ class SupabaseStore:
 
 
 def get_store():
+    """Return a Supabase-backed store. This application requires Supabase
+    to be configured — local SQLite fallback is intentionally disabled.
+
+    The function raises a RuntimeError when the required environment
+    variables are not present to avoid accidental local-only operation.
+    """
     supabase_url = os.environ.get("SUPABASE_URL")
     supabase_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-    if supabase_url and supabase_key:
-        return SupabaseStore(supabase_url, supabase_key)
-    return SQLiteStore()
+    if not supabase_url or not supabase_key:
+        raise RuntimeError(
+            "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set. "
+            "This app is configured to use Supabase as the single source of truth."
+        )
+    return SupabaseStore(supabase_url, supabase_key)
