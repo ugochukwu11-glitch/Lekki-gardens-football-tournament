@@ -49,15 +49,15 @@ RAW_TEAMS = [
     },
     {
         "name": "H.I REAL ESTATE FC",
-        "players": ["Mr Henry", "Mr Muri", "Mr Denis", "Mr Okikiola", "Emma", ""],
+        "players": ["Mr Henry", "Mr Muri", "Mr Denis", "Mr Okikiola", "Emma", "Daniel"],
     },
     {
         "name": "ASIAMONEY FC",
-        "players": ["Shedi", "Paul", "Ekom", "Gotze", "Moris", ""],
+        "players": ["Shedi", "Paul", "Ekom", "Gotze", "Moris", "Asiamoney"],
     },
     {
         "name": "KELVIN FC",
-        "players": ["Mr Kelvin", "Mr Mofe", "Mr OBO", "Mr Pato", "", ""],
+        "players": ["Mr Kelvin", "Mr Mofe", "Mr OBO", "Mr Pato", "Mr Tmaxee", ""],
     },
 ]
 

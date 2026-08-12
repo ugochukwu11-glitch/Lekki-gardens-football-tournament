@@ -63,7 +63,7 @@ TEAMS_SEED = [
         "primary_color": "#8b5cf6",
         "secondary_color": "#151515",
         "logo_kind": "star",
-        "players": ["Shedi", "Paul", "Ekom", "Gotze", "Moris", ""],
+        "players": ["Shedi", "Paul", "Ekom", "Gotze", "Moris", "Asiamoney"],
     },
     {
         "name": "KELVIN FC",
@@ -71,7 +71,7 @@ TEAMS_SEED = [
         "primary_color": "#10b981",
         "secondary_color": "#0e1116",
         "logo_kind": "circle",
-        "players": ["Mr Kelvin", "Mr Mofe", "Mr OBO", "Mr Pato", "", ""],
+        "players": ["Mr Kelvin", "Mr Mofe", "Mr OBO", "Mr Pato", "Mr Tmaxee", ""],
     },
 ]
 
