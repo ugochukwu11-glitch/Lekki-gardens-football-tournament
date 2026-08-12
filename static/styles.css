@@ -422,7 +422,7 @@ body::before {
 .table-head,
 .table-row {
   display: grid;
-  grid-template-columns: 52px 2.3fr repeat(5, minmax(40px, 1fr)) 1.1fr;
+  grid-template-columns: 52px 2.3fr repeat(6, minmax(40px, 1fr));
   gap: 10px;
   align-items: center;
 }
@@ -642,7 +642,7 @@ body::before {
 
   .table-head,
   .table-row {
-    min-width: 700px;
+    min-width: 620px;
   }
 
   .team-col {
@@ -700,20 +700,5 @@ body::before {
     grid-template-columns: 1fr;
   }
 
-  /* Reduce team logo and name size so key columns fit on mobile */
-  .team-col img {
-    width: 24px;
-    height: 24px;
-  }
-
-  .team-col strong {
-    font-size: 0.85rem;
-  }
-
-  /* Shrink the team column and compact numeric columns so P, GD, PTS appear without scrolling */
-  .table-head,
-  .table-row {
-    grid-template-columns: 52px 1.6fr repeat(5, minmax(36px, 1fr)) 0.9fr;
-    min-width: 0;
-  }
+  /* mobile tweaks kept minimal; team logo/name sizes inherited from 960px rules */
 }

@@ -106,11 +106,11 @@
               <span>#</span>
               <span>Team</span>
               <span>P</span>
+              <span>GD</span>
+              <span>Pts</span>
               <span>W</span>
               <span>D</span>
               <span>L</span>
-              <span>GD</span>
-              <span>Pts</span>
             </div>
 
             {% for row in state.standings %}
@@ -121,11 +121,11 @@
                 <strong>{{ row.name }}</strong>
               </span>
               <span>{{ row.played }}</span>
+              <span>{{ row.gd }}</span>
+              <span class="pts">{{ row.points }}</span>
               <span>{{ row.won }}</span>
               <span>{{ row.drawn }}</span>
               <span>{{ row.lost }}</span>
-              <span>{{ row.gd }}</span>
-              <span class="pts">{{ row.points }}</span>
             </div>
             {% endfor %}
           </div>
