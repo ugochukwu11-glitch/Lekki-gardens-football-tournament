@@ -188,16 +188,19 @@ body::before {
 }
 
 .match-teams {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
   margin: 14px 0 10px;
+  width: 100%;
   min-width: 0;
 }
 
 .match-teams .team-chip {
-  max-width: 44%;
+  width: 100%;
+  max-width: 100%;
+  justify-content: center;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -205,6 +208,7 @@ body::before {
 .team-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 8px 10px;
   border-radius: 999px;
@@ -214,6 +218,7 @@ body::before {
   font-size: 0.72rem;
   line-height: 1.2;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .team-chip img {
