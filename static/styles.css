@@ -442,15 +442,19 @@ body::before {
 
 .table-wrap {
   display: block;
-  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 4px;
 }
 
+/* Desktop table layout */
 .table-head,
 .table-row {
   display: grid;
-  grid-template-columns: 52px 2.3fr repeat(6, minmax(40px, 1fr));
+  grid-template-columns: 40px 2.3fr repeat(6, minmax(40px, 1fr));
   gap: 10px;
   align-items: center;
+  min-width: 560px;
 }
 
 .table-head {
@@ -462,7 +466,7 @@ body::before {
 }
 
 .table-row {
-  padding: 14px 12px;
+  padding: 12px 12px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
@@ -490,6 +494,9 @@ body::before {
 .team-col strong {
   line-height: 1.2;
   font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pts {
@@ -669,29 +676,18 @@ body::before {
     grid-template-columns: 1fr;
   }
 
-  .table-wrap {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 4px;
-  }
-
-  .table-head,
-  .table-row {
-    min-width: 620px;
-  }
-
   .team-col {
     justify-content: flex-start;
     text-align: left;
   }
 
   .team-col img {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
   }
 
   .team-col strong {
-    font-size: 0.95rem;
+    font-size: 0.88rem;
   }
 
   .tabs {
@@ -701,6 +697,85 @@ body::before {
 
   .admin-player-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ── Mobile standings table: #, Team, P, GD, PTS visible; W D L scroll ── */
+@media (max-width: 640px) {
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -16px;
+    padding: 0 16px 4px;
+  }
+
+  .table-head,
+  .table-row {
+    display: grid;
+    grid-template-columns:
+      22px    /* # */
+      148px   /* Team */
+      28px    /* P */
+      34px    /* GD */
+      38px    /* PTS */
+      28px    /* W */
+      28px    /* D */
+      28px;   /* L */
+    gap: 4px;
+    min-width: max-content;
+  }
+
+  .table-head span,
+  .table-row span {
+    text-align: center;
+    font-size: 0.68rem;
+    padding: 0;
+  }
+
+  .table-row .rank,
+  .table-head span:first-child {
+    text-align: left;
+    font-size: 0.7rem;
+  }
+
+  .table-head span:nth-child(2) {
+    text-align: left;
+    padding-left: 2px;
+  }
+
+  .team-col {
+    justify-content: flex-start;
+    gap: 5px;
+    padding-left: 2px;
+  }
+
+  .team-col img {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .team-col strong {
+    font-size: 0.68rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  .pts {
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .table-row {
+    padding: 10px 6px;
+    border-radius: 14px;
+  }
+
+  .table-head {
+    padding: 4px 6px 6px;
+    font-size: 0.65rem;
   }
 }
 
